@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html class="no-js" >
+
+<head>
+  <title>CEDESSP - Qualidade - Estatísticas</title>
+  <!-- Bootstrap -->
+  <link href="css\bootstrap.min.css" rel="stylesheet" media="screen">
+  <link href="css\bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+  <link href="css\jquery.easy-pie-chart.css" rel="stylesheet" media="screen">
+  <link href="css\styles.css" rel="stylesheet" media="screen">
+  <script src="css\modernizr-2.6.2-respond-1.1.0.min.js"></script>
+
+<div class="pull-right"><span class="badge badge-warning">Sistemas: {{totalGeral}}</span></div>
+<div class="pull-left"><span class="badge badge-warning">Atualizado em: {{dtAtualizacao}}</span></div>
+<br>
+</head>
+
+<body ng-app="listaEstatistica" ng-controller="listaEstatisticaCtrl">
+  <div id="exportable" class="row-fluid">
+
+    <div class="span6">
+      <div class="block">
+        <div class="navbar navbar-inner block-header">
+          <div class="muted pull-left">DAS - Documento de Arquitetura  </div>
+          <div class="pull-right"><span class="badge badge-warning">{{documentoDAS.total}}</span></div>
+        </div>
+        <div class="block-content collapse in">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th align="left"><a href="" ng-click="ordenarPor('sistema')">Sistemas</a></th>
+                <th align="right"><a href="" ng-click="ordenarPor('dtAtualizacaoDAS')">Data Atualizacao</a></th>
+                <th><a href="" ng-click="ordenarPor('statusDAS')">Status</a></th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr ng-repeat="item in listaDAS | filter:criterioDeBusca | orderBy:criterioDeOrdenacao:direcaoDaOrdenacao">
+                <td>{{$index+1}}</td>
+                <td>{{item.sistema}}</td>
+                <td>{{item.dtAtualizacaoDAS}}</td>
+                <td><span ng-if="item.statusDAS == true"><small class="label label-success"><i class="fa fa-clock-o"></i> OK</small></span> 
+                  <span ng-if="item.statusDAS == false"><small class="label label-danger"><i class="fa fa-clock-o"></i> X </small></span> </td>
+                </tr>
+              </tbody>
+
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="span6">
+        <div class="block">
+          <div class="navbar navbar-inner block-header">
+            <div class="muted pull-left">CD - Caso de Desenvolvimento</div>
+            <div class="pull-right"><span class="badge badge-warning">{{documentoCD.total}}</span></div>
+          </div>
+
+          <div class="block-content collapse in" >
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th align="left"><a href="" ng-click="ordenarPor('sistema')">Sistemas</a></th>
+                  <th align="right"><a href="" ng-click="ordenarPor('dtAtualizacaoDAS')">Data Atualizacao</a></th>
+                  <th><a href="" ng-click="ordenarPor('statusDAS')">Status</a></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="item in listaDAS | filter:criterioDeBusca | orderBy:criterioDeOrdenacao:direcaoDaOrdenacao">
+                  <td>{{$index+1}}</td>
+                  <td>{{item.sistema}}</td>
+                  <td>{{item.dtAtualizacaoCD}}</td>
+                  <td><span ng-if="item.statusCD == true"><small class="label label-success"> OK</small></span>
+                    <span ng-if="item.statusCD == false"><small class="label label-danger"> X </small></span> </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+<button ng-click="exportData()">Export</button>
+
+  <script src="css\angular.js"></script>
+  <script src="css\jquery-1.9.1.min.js"></script>
+  <script src="css\bootstrap.js"></script>
+  <script src="css\app.js"></script> 
+  <!-- BASE DA VAL -->
+  <script src="css\listaCtrl.js"></script> 
+  <script src="css\jquery.easy-pie-chart.js"></script>
+  <script src="css\scripts.js"></script>
+
+
+<!-- EXPORTAR -->
+  <script>
+  function listaEstatisticaCtrl($scope) {
+    $scope.exportData = function () {
+        var blob = new Blob([document.getElementById('exportable').innerHTML], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+        });
+        saveAs(blob, "Indicador.xls");
+  };
+
+  </script>
+</body>
+</html>
